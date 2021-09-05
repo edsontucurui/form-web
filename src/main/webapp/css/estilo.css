@@ -1,0 +1,44 @@
+fieldset {
+
+    width: 18%;
+    margin:auto;
+    border: 2px solid blueviolet
+    
+}
+
+boby {
+
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+label,
+input,
+.classe,
+#indentificacao {
+    display: block;
+}
+
+input, select {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: 2px solid blueviolet;
+    border-radius: 3px;
+}
+
+
+input[type=text], input[type=email] {
+    width: 420px;
+}
+
+select{
+    width: 180px
+}
+
+.bt {
+    border:2px solid blueviolet;
+
+    padding: 3px;
+    border-radius: 5px;
+}
