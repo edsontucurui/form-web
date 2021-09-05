@@ -7,5 +7,12 @@ select *
 from pessoas p 
 
 update pessoas p
-set dt_nascimento = '13/09/2000'
+set email = 'edson.p.silva@df.estudante.senai.br'
 where p.nome_completo = 'Edson'
+
+
+select nome_completo, email
+from pessoas 
+
+delete from pessoas
+where id in ('6','7','5');

@@ -1,3 +1,4 @@
+package org.senai.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
@@ -9,65 +10,38 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.senai.dao.PessoaDao;
+import org.senai.db.Conexao;
+import org.senai.model.Pessoa;
+
 import com.sun.jdi.connect.spi.Connection;
 
 @WebServlet("/cadastroServlet")
 public class CadastroServlet extends HttpServlet {
 	
-	protected void service(HttpServletRequest req, HttpServletResponse res) 
-			throws ServletException, IOException {
+	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
-		String nomeCompleto = req.getParameter("nome-compreto");
-		String telefone = req.getParameter("telefone");
-		String dtNascimento = req.getParameter("dt-Nascimento");
-		String email = req.getParameter("email");
-		String sexo = req.getParameter("sexo");
-		String[] tecnologia = req.getParameterValues("tecnologia");
-		String escolaridade= req.getParameter("escolaridade");
+		Pessoa objP = new Pessoa();
 		
+		objP.setNomeCompleto(req.getParameter("nome-compreto"));
+		objP.setTelefone(req.getParameter("telefone"));
+		objP.setDtNascimento(req.getParameter("dt-Nascimento"));
+		objP.setEmail(req.getParameter("email"));
+		objP.setSexo(req.getParameter("sexo"));
+		objP.setTecnologia(req.getParameterValues("tecnologia"));
+		objP.setEscolaridade(req.getParameter("escolaridade"));
 		
-		PrintWriter saida = res.getWriter();
-		saida.println("<html>");
-		saida.println(nomeCompleto);
-		saida.println(telefone);
-		saida.println(dtNascimento);
-		saida.println(email);
-		saida.println(sexo);
-		String lsTecnologia = "";
-		for (String t : tecnologia) {
-			saida.println(t);
-			lsTecnologia += t+",";
+		PessoaDao objDao = new PessoaDao();
+
+		if(objDao.adicionar(objP)) {
+			res.sendRedirect("listaPessoas.jsp");
+		}else {
+			PrintWriter saida = res.getWriter();
+			saida.println("<html>");
+			saida.println("Erro ao gravar");
+			saida.println("</html>");
 		}
 		
-		saida.println(escolaridade);
-		saida.println("</html>");
-		
-		
-		try {
-			Class.forName("org.postgresql.Driver");
-			String url = "jdbc:postgresql://chunee.db.elephantsql.com:5432/zenljtot";
-			String usuarioDb = "zenljtot";
-			String senhaDb = "mSM6ymspQ4RtqaNu85umheOu67sziooM";
-			java.sql.Connection cont = DriverManager.getConnection(url,usuarioDb,senhaDb);
-			saida.println("Ok para conexão");
-			
-			String sql ="insert into pessoas (nome_completo, telefone, dt_nascimento, email, sexo, tecnologia , escolaridade)"
-					+ "values('"+nomeCompleto+"','"+telefone+"','"+dtNascimento+"','"+email+"','"+sexo+"','"+lsTecnologia+"','"+escolaridade+"') ";
-			
-			PreparedStatement pst = cont.prepareStatement(sql);
-			pst.execute();
-			pst.close();
-			cont.close();
-			
-			saida.println("Registro Gravado");
-			
-			
-		} catch (Exception e) {
-			saida.println("Erro de conexão");
-		
-		}
-			
-		saida.println("</html>");
 	}
 }
 
