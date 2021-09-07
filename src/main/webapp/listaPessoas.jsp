@@ -6,13 +6,7 @@
 <%@page import="org.senai.db.Conexao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Lista de Pessoas</title>
-</head>
-<body>
+
 
 	<%
 	PessoaDao objDao = new PessoaDao();
@@ -21,24 +15,35 @@
 		
 	
 	%>
-	<table>
+	<table id="estilo-tb">
 
 		<tr>
+			<th>Id</th>
 			<th>Nome</th>
 			<th>Telefone</th>
 			<th>E-mail</th>
+<!-- 			<th>Ação</th> -->
+
 		</tr>
 		
 		<% 
-		for(Pessoa p : ls) { 
+		for(Pessoa ps : ls) { 
 		%>
-		<tr>
-			<td><%=p.getNomeCompleto() %></td>
-			<td><%=p.getTelefone()%></td>
-			<td><%=p.getEmail()%></td>
+		
+		<tr onclick="window.location.href = 'formCadastro.jsp?id=<%=ps.getId()%>'">
+		
+			<td><%=ps.getId()%></td>
+			<td><%=ps.getNomeCompleto() %></td>
+			<td><%=ps.getTelefone()%></td>
+			<td><%=ps.getEmail()%></td>
+<%-- 			<td><a href="formCadastro.jsp?id=<%=ps.getId()%>">Editar</a> --%>
+<%-- 			<a href="cadastroServlet?acao=apagar&id=<%=ps.getId()%>">Apagar</a></td> --%>
 			
+				
 		</tr>
-		<%} %>
+		<%
+		} 
+		%>
 		
 	</table>
 	 <% 
@@ -46,5 +51,3 @@
 	 }
 				
      %>
-</body>
-</html>

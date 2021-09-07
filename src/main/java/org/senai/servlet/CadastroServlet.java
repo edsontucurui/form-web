@@ -14,7 +14,7 @@ import org.senai.dao.PessoaDao;
 import org.senai.db.Conexao;
 import org.senai.model.Pessoa;
 
-import com.sun.jdi.connect.spi.Connection;
+//import com.sun.jdi.connect.spi.Connection;
 
 @WebServlet("/cadastroServlet")
 public class CadastroServlet extends HttpServlet {
@@ -23,6 +23,11 @@ public class CadastroServlet extends HttpServlet {
 		
 		Pessoa objP = new Pessoa();
 		
+		String acao = req.getParameter("acao");
+		
+		if (acao != null && acao.equals("apagar")) {
+			objP.setId(Integer.parseInt(req.getParameter("id")));
+		} else {
 		objP.setNomeCompleto(req.getParameter("nome-compreto"));
 		objP.setTelefone(req.getParameter("telefone"));
 		objP.setDtNascimento(req.getParameter("dt-Nascimento"));
@@ -30,20 +35,40 @@ public class CadastroServlet extends HttpServlet {
 		objP.setSexo(req.getParameter("sexo"));
 		objP.setTecnologia(req.getParameterValues("tecnologia"));
 		objP.setEscolaridade(req.getParameter("escolaridade"));
-		
-		PessoaDao objDao = new PessoaDao();
+		objP.setId(Integer.parseInt(req.getParameter("id")));
+		}
 
-		if(objDao.adicionar(objP)) {
-			res.sendRedirect("listaPessoas.jsp");
+		PessoaDao objDao = new PessoaDao();
+		
+		boolean validar = false;
+		
+		
+		if(objP.getId() > 0) {
+			if (acao != null && acao.equals("apagar")) {
+				validar = objDao.apagar(objP.getId());
+			}else {
+				validar = objDao.alterar(objP);
+			}
 		}else {
-			PrintWriter saida = res.getWriter();
-			saida.println("<html>");
-			saida.println("Erro ao gravar");
-			saida.println("</html>");
+			validar = objDao.adicionar(objP);
+		
+		}
+			
+			if(validar) {
+				res.sendRedirect("formCadastro.jsp");
+			}else {
+				PrintWriter saida = res.getWriter();
+				saida.println("<html>");
+				saida.println("Erro ao gravar");
+				saida.println("</html>");
+			
+		}
+
+		
 		}
 		
 	}
-}
+
 
 	
 

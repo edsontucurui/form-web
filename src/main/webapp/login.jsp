@@ -1,13 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Login</title>
 <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
+<%@ include file="menu.jsp" %>
     <fieldset>
     <form action="logindervlet" method="post">
         <legend><b>ACESSO</b></legend>
